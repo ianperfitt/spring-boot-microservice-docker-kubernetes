@@ -20,16 +20,19 @@ public class DepartmentController {
 
     @PostMapping
     public Department add(@RequestBody Department department) {
+        LOGGER.info("Department add: {}", department);
         return departmentRepository.addDepartment(department);
     }
 
     @GetMapping
     public List<Department> findAll() {
+        LOGGER.info("Department findAll");
         return departmentRepository.findAll();
     }
 
     @GetMapping("/{id}")
     public Department findById(@PathVariable Long id) {
+        LOGGER.info("Department find: id={}", id);
         return departmentRepository.findById(id);
     }
 }
