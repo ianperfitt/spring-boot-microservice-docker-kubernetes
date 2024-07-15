@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  api-gateway-app
+  labels:
+    app: api-gateway-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-gateway-app
+  template:
+    metadata:
+      labels:
+        app:  api-gateway-app
+    spec:
+      # initContainers:
+        # Init containers are exactly like regular containers, except:
+          # - Init containers always run to completion.
+          # - Each init container must complete successfully before the next one starts.
+      containers:
+      - name:  api-gateway-app
+        image:  ianperfitt/api-gateway:0.0.1
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 8081
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: api-gateway-svc
+spec:
+  selector:
+    app: api-gateway-app
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 8081

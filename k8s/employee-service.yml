@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  employee-service-app
+  labels:
+    app: employee-service-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: employee-service-app
+  template:
+    metadata:
+      labels:
+        app:  employee-service-app
+    spec:
+      # initContainers:
+        # Init containers are exactly like regular containers, except:
+          # - Init containers always run to completion.
+          # - Each init container must complete successfully before the next one starts.
+      containers:
+      - name:  employee-service-app
+        image:  ianperfitt/employee-service:0.0.1
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 8082
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: employee-service-svc
+spec:
+  selector:
+    app: employee-service-app
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 8082
