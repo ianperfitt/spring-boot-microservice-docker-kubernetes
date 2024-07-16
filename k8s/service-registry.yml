@@ -16,8 +16,8 @@ metadata:
 spec:
   clusterIP: None
   ports:
-  - port: 8761
-    name: eureka
+    - port: 8761
+      name: eureka
   selector:
     app: eureka
 
@@ -29,27 +29,27 @@ metadata:
   name: eureka
 spec:
   serviceName: "eureka"
-  replicas: 1 # by default is 1
+  replicas: 1
   selector:
     matchLabels:
       app: eureka
   template:
     metadata:
       labels:
-        app: eureka # has to match .spec.selector.matchLabels
+        app: eureka
     spec:
       containers:
-      - name: eureka
-        image: ianperfitt/service-registry:0.0.1
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 8761
-        env:
-          - name: EUREKA_SERVER_ADDRESS
-            valueFrom:
-              configMapKeyRef:
-                name: eureka-cm
-                key: eureka_service_address
+        - name: eureka
+          image: ianperfitt/service-registry:0.0.1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8761
+          env:
+            - name: EUREKA_SERVER_ADDRESS
+              valueFrom:
+                configMapKeyRef:
+                  name: eureka-cm
+                  key: eureka_service_address
 
 ---
 
